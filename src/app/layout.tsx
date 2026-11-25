@@ -62,6 +62,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en-GB" className={`${montserrat.variable} ${poppins.variable}`} suppressHydrationWarning>
+      <head>
+        <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-PMQ76BPK" />
+        <script
+          id="google-tag-init"
+          dangerouslySetInnerHTML={{
+            __html: `
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+`,
+          }}
+        />
+      </head>
       <body
         suppressHydrationWarning
         className="min-h-screen flex flex-col bg-[#F6F8FC] text-[#3B4A66] font-poppins antialiased selection:bg-[#F7820E] selection:text-white"
