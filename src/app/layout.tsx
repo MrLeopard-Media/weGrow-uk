@@ -2,10 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Montserrat, Poppins } from "next/font/google";
 import "./globals.css";
 import SiteChrome from "@/components/layout/SiteChrome";
-import { SiteContactProvider } from "@/components/layout/SiteContactProvider";
 import MetaPixel from "@/components/analytics/MetaPixel";
 import { SITE_METADATA } from "@/constants/seo";
-import { getSiteContact } from "@/services/contact/siteContact";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -40,7 +38,7 @@ export const metadata: Metadata = {
         alt: SITE_METADATA.siteName,
       },
     ],
-    locale: "en_US",
+    locale: "en_GB",
     type: "website",
   },
   twitter: {
@@ -57,23 +55,19 @@ export const viewport: Viewport = {
   themeColor: "#0B3B8F",
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const contact = await getSiteContact();
-
   return (
-    <html lang="en" className={`${montserrat.variable} ${poppins.variable}`} suppressHydrationWarning>
+    <html lang="en-GB" className={`${montserrat.variable} ${poppins.variable}`} suppressHydrationWarning>
       <body
         suppressHydrationWarning
         className="min-h-screen flex flex-col bg-[#F6F8FC] text-[#3B4A66] font-poppins antialiased selection:bg-[#F7820E] selection:text-white"
       >
         <MetaPixel />
-        <SiteContactProvider contact={contact}>
-          <SiteChrome>{children}</SiteChrome>
-        </SiteContactProvider>
+        <SiteChrome>{children}</SiteChrome>
       </body>
     </html>
   );

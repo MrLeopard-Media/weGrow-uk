@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getLegalContactText, getSiteContact, type SiteContact } from "@/services/contact/siteContact";
+import { UK_CONTACT } from "@/constants/company";
 import Container from "@/components/common/Container";
 import PageHero from "@/components/common/PageHero";
 
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   description: "Review the terms for using the WeGrow Skill Campus website and making course enquiries.",
 };
 
-const getSections = (contact: SiteContact) => [
+const sections = [
   { title: "1. Introduction", text: "Welcome to the WeGrow Skill Campus website. By accessing or using this website, you agree to these Terms and Conditions. If you do not agree, please discontinue use of the website." },
   { title: "2. Website Information", text: "This website provides general information about WeGrow Skill Campus, its programs, learning activities, and contact options. Course details, eligibility, duration, fees, schedules, and availability must be confirmed with the institute before enrolment." },
   { title: "3. Course Enquiries and Enrolment", text: "Submitting an enquiry does not automatically constitute admission or enrolment. Enrolment is subject to applicable program requirements, availability, approved fees, and confirmation by the institute." },
@@ -23,13 +23,11 @@ const getSections = (contact: SiteContact) => [
   { title: "11. Limitation of Liability", text: "The website is provided for general informational purposes. Any legal limitations or exclusions must be reviewed and drafted for the institute's actual operations and applicable law." },
   { title: "12. Privacy", text: "Personal information submitted through the website is handled according to the applicable Privacy Policy and relevant legal requirements." },
   { title: "13. Changes to These Terms", text: "We may revise these Terms and Conditions from time to time. Publish updates with the latest revision date." },
-  { title: "14. Governing Law", text: "These Terms and Conditions are intended for an institute operating in India. Have jurisdiction-specific provisions reviewed by a qualified legal professional in light of the institute's registered location and circumstances." },
-  { title: "15. Contact Information", text: <>{getLegalContactText(contact)} <Link href="/contact" className="text-brand-blue underline">Enquiry form</Link></> },
+  { title: "14. Scope of These Terms", text: "These terms apply to the UK website. Any terms specific to a course are provided as part of enrolment." },
+  { title: "15. Contact Information", text: <>WeGrow Skill Campus. {UK_CONTACT.address}. Call <a href={UK_CONTACT.phoneHref} className="text-brand-blue underline">{UK_CONTACT.phone}</a>, email <a href={`mailto:${UK_CONTACT.email}`} className="text-brand-blue underline">{UK_CONTACT.email}</a> or use the <Link href="/contact" className="text-brand-blue underline">enquiry form</Link>.</> },
 ];
 
-export default async function TermsAndConditionsPage() {
-  const sections = getSections(await getSiteContact());
-
+export default function TermsAndConditionsPage() {
   return (
     <div className="bg-brand-bg pb-16 sm:pb-20">
       <PageHero

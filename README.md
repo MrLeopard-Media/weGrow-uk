@@ -1,6 +1,6 @@
-# WeGrow Skill Campus
+# WeGrow Skill Campus UK
 
-Official web platform for **WeGrow Skill Campus** — bridging the gap between education and industry through practical training, live real-world projects, industry mentorship, and dedicated corporate placement support.
+UK website for [WeGrow Skill Campus](https://wegrowcampus.co.uk), featuring courses, practical training and career support.
 
 ## 🚀 Key Features
 
@@ -30,10 +30,10 @@ Official web platform for **WeGrow Skill Campus** — bridging the gap between e
 ### Installation
 ```bash
 # Clone the repository
-git clone https://github.com/Vjkumar2004/wegrowskillcampus.git
+git clone https://github.com/MrLeopard-Media/weGrow-uk.git
 
 # Navigate to project directory
-cd wegrowskillcampus
+cd weGrow-uk
 
 # Install dependencies
 npm install
@@ -50,20 +50,11 @@ npm run build
 npm start
 ```
 
-### Contact details by domain
+Use `NEXT_PUBLIC_API_BASE_URL` for the enquiry API. Events uses the India site's public catalogue. Keep the ImageKit endpoint aligned with the India site so both deployments display the same photos. If the India catalogue is unavailable, the UK site falls back to configured ImageKit access, then cached events or the bundled archive.
 
-Point both domains at the same Next.js deployment. The app uses the request's
-`Host` header to select contact details. Configure your proxy to preserve the
-public host and include it in any cache key for page responses.
+Course fees come from [data/course-fees.json](data/course-fees.json). Each amount is displayed in pounds as entered. A `null` amount shows “Enquire for the fee”.
 
-Hosts ending in `.uk` (including `.co.uk`) use the optional `UK_CONTACT_*`
-variables in [.env.example](.env.example). Leave them empty to show the UK
-contact placeholder and offer the enquiry form. Set them in the deployment
-environment when the UK details are ready. Use international format for
-telephone and WhatsApp numbers, including the leading `+`.
-
-Hosts ending in `.in` and local development use the India profile. To preview
-the UK profile locally, run `curl -H 'Host: wegrow.test.uk' http://localhost:3000/contact`.
+The e-shop at `/eshop` uses [data/products.json](data/products.json). Each product has an `id`, `name`, formatted `price`, and an `image` path. The ID forms the product URL. Product pages also support a `summary`, a full `description`, and a list of `relatedProductIds` that reference other catalogue entries. Put images in `public/products/` and reference them as `/products/filename` in the JSON. Rebuild after editing the catalogue. The basket at `/eshop/cart` stores product IDs and quantities in browser storage and uses the current catalogue prices for subtotals.
 
 ## 📄 License
 All rights reserved © 2026 WeGrow Skill Campus.

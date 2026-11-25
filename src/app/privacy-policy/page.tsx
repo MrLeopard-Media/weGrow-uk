@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getLegalContactText, getSiteContact, type SiteContact } from "@/services/contact/siteContact";
+import { UK_CONTACT } from "@/constants/company";
 import Container from "@/components/common/Container";
 import PageHero from "@/components/common/PageHero";
 
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   description: "Read how WeGrow Skill Campus may collect and use information submitted through its website.",
 };
 
-const getSections = (contact: SiteContact) => [
+const sections = [
   { title: "1. Introduction", text: "WeGrow Skill Campus respects the privacy of visitors to its website. This Privacy Policy explains how information submitted through the website and enquiry forms may be collected, used, stored, and protected. Update this policy to reflect the institute's actual practices." },
   { title: "2. Information We Collect", text: "Depending on the features you use, the website may collect your name and contact details, email address and phone number, course interests and enquiry messages, information you provide when contacting us, and technical information from website logs, cookies, or analytics tools where applicable. Please do not submit sensitive personal information through general enquiry forms." },
   { title: "3. How We Use Information", text: "Information may be used to respond to course and admissions enquiries, provide program or enrolment information, send relevant updates where authorised, operate and improve the website, protect against misuse, and meet applicable obligations. Confirm these uses against your actual operations." },
@@ -17,16 +17,14 @@ const getSections = (contact: SiteContact) => [
   { title: "5. Data Security", text: "Describe the security measures actually used to protect personal information. Avoid promising that any internet transmission or storage system is completely secure." },
   { title: "6. Data Retention", text: "State how long personal information is kept, what determines the retention period, and how deletion requests are handled. Insert the institute's actual retention practices and deletion procedures." },
   { title: "7. Cookies and Analytics", text: "List the cookies, analytics tools, consent controls, and third-party services actually used by the website. Remove any tools or practices that do not apply." },
-  { title: "8. Your Privacy Rights", text: <>Depending on applicable law, visitors may have rights relating to access, correction, deletion, consent, or other handling of personal information. For privacy-related requests or inquiries, {contact.email ? <>email <a className="text-brand-blue underline" href={`mailto:${contact.email}`}>{contact.email}</a>.</> : <>use our <Link className="text-brand-blue underline" href="/contact">enquiry form</Link>.</>}</> },
+  { title: "8. Your Privacy Rights", text: <>Depending on applicable law, visitors may have rights relating to access, correction, deletion, consent, or other handling of personal information. For privacy-related requests or inquiries, email <a className="text-brand-blue underline" href={`mailto:${UK_CONTACT.email}`}>{UK_CONTACT.email}</a>.</> },
   { title: "9. Third-Party Websites", text: "The website may link to third-party websites or services. Their privacy practices are governed by their own policies." },
   { title: "10. Children's Privacy", text: "Describe how the institute handles information from children and any authorisation or safeguards used. Do not collect children's information without appropriate authorisation or safeguards where required." },
   { title: "11. Changes to This Policy", text: "When this policy or the institute's practices change, publish the updated version with its revision date." },
-  { title: "12. Contact Us", text: <>{getLegalContactText(contact)} <Link href="/contact" className="text-brand-blue underline">Enquiry form</Link></> },
+  { title: "12. Contact Us", text: <>WeGrow Skill Campus. {UK_CONTACT.address}. Call <a href={UK_CONTACT.phoneHref} className="text-brand-blue underline">{UK_CONTACT.phone}</a>, email <a href={`mailto:${UK_CONTACT.email}`} className="text-brand-blue underline">{UK_CONTACT.email}</a> or use the <Link href="/contact" className="text-brand-blue underline">enquiry form</Link>.</> },
 ];
 
-export default async function PrivacyPolicyPage() {
-  const sections = getSections(await getSiteContact());
-
+export default function PrivacyPolicyPage() {
   return (
     <div className="bg-brand-bg pb-16 sm:pb-20">
       <PageHero

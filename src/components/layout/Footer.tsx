@@ -2,12 +2,12 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { useSiteContact } from "./SiteContactProvider";
+import { UK_CONTACT, UK_CONTACT_MAP } from "@/constants/company";
+import { COURSES } from "@/constants/courses";
 import {
   MapPin,
   Phone,
   Mail,
-  MessageCircle,
   Clock,
   ArrowRight,
   ChevronDown,
@@ -16,16 +16,9 @@ import {
 } from "lucide-react";
 
 export const Footer: React.FC = () => {
-  const contact = useSiteContact();
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
-  const [selectedCampus, setSelectedCampus] = useState(0);
-  const activeCampus = contact.locations[selectedCampus];
-  const campusAddress = activeCampus?.branches[0].address;
-  const campusMapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`WeGrow Skill Campus ${campusAddress}`)}`;
-  const campusEmbedUrl = `https://maps.google.com/maps?q=${encodeURIComponent(campusAddress ?? "")}&output=embed`;
-
   // Accordion state for mobile view
   const [openAccordions, setOpenAccordions] = useState<{ [key: string]: boolean }>({
     quickLinks: false,
@@ -65,14 +58,12 @@ export const Footer: React.FC = () => {
     { label: "Global Exposure", href: "/global-exposure" },
     { label: "About Us", href: "/about" },
     { label: "Contact Us", href: "/contact" },
+    { label: "E-shop", href: "/eshop" },
   ];
 
   const PROGRAM_LINKS = [
-    { label: "AI Java Full Stack Development", href: "/programs/ai-java-full-stack" },
-    { label: "AI Python Full Stack Development", href: "/programs/ai-python-full-stack" },
-    { label: "Data Analytics", href: "/programs/data-analytics" },
-    { label: "Digital Marketing", href: "/programs/digital-marketing" },
-    { label: "View All Programs", href: "/programs" },
+    ...COURSES.map(({ id, title }) => ({ label: title, href: `/programs/${id}` })),
+    { label: "View all courses", href: "/programs" },
   ];
 
   const USEFUL_LINKS = [
@@ -355,153 +346,77 @@ export const Footer: React.FC = () => {
               <div className="w-[46px] h-[3px] bg-[#F7820E] rounded-full mt-[12px] mb-[24px]" />
             </div>
 
-            {contact.locations.length > 1 && (
-              <div
-                className="mb-5 grid grid-cols-2 w-full max-w-[390px] rounded-xl bg-white/10 p-1.5 border border-white/15 gap-2 shadow-sm overflow-hidden"
-                role="group"
-                aria-label="Choose a campus location"
-              >
-                {contact.locations.map((campus, index) => {
-                  const isSelected = selectedCampus === index;
-                  return (
-                    <button
-                      key={campus.name}
-                      type="button"
-                      onClick={() => setSelectedCampus(index)}
-                      aria-pressed={isSelected}
-                      className={`min-w-0 rounded-lg py-2.5 px-3 text-xs sm:text-[13px] md:text-sm font-bold text-center tracking-normal transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#F7820E] whitespace-nowrap overflow-hidden text-ellipsis ${
-                        isSelected
-                          ? "bg-[#F7820E] text-white shadow-md scale-[1.01]"
-                          : "text-white/80 hover:bg-white/10 hover:text-white"
-                      }`}
-                    >
-                      {campus.name}
-                    </button>
-                  );
-                })}
-              </div>
-            )}
+            <div className="flex items-start gap-3 text-white/90 mb-4">
+              <MapPin className="mt-1 h-5 w-5 shrink-0 stroke-[2] text-[#F7820E]" aria-hidden="true" />
+              <span className="text-sm sm:text-[15px] leading-relaxed">{UK_CONTACT.address}</span>
+            </div>
 
-            {activeCampus && (
-              <div className="space-y-3 mb-4">
-                {activeCampus.branches.map((branch, idx) => (
-                  <div key={idx} className="flex items-start gap-3 text-white/90">
-                    <MapPin className="mt-1 h-5 w-5 shrink-0 stroke-[2] text-[#F7820E]" aria-hidden="true" />
-                    <div className="text-sm sm:text-[15px] leading-relaxed">
-                      {branch.label && (
-                        <span className="block text-[11px] font-bold text-[#F7820E] uppercase tracking-wider mb-0.5">
-                          {branch.label}
-                        </span>
-                      )}
-                      <span>{branch.address}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
+            <div className="flex items-start gap-3 text-white/90 mb-3">
+              <Phone className="h-5 w-5 shrink-0 stroke-[2] text-[#F7820E] mt-0.5" aria-hidden="true" />
+              <a href={UK_CONTACT.phoneHref} className="text-sm sm:text-[15px] hover:text-[#F7820E] transition-colors">{UK_CONTACT.phone}</a>
+            </div>
 
-            {contact.phones.length > 0 && (
-              <div className="flex items-start gap-3 text-white/90 mb-3">
-                <Phone className="h-5 w-5 shrink-0 stroke-[2] text-[#F7820E] mt-0.5" aria-hidden="true" />
-                <div className="flex flex-col gap-1 text-sm sm:text-[15px]">
-                  {contact.phones.map((phone) => (
-                    <a key={phone.tel} href={`tel:${phone.tel}`} className="hover:text-[#F7820E] transition-colors">{phone.display}</a>
-                  ))}
-                </div>
-              </div>
-            )}
+            <div className="flex items-center gap-3 text-white/90 mb-3">
+              <Mail className="h-5 w-5 shrink-0 stroke-[2] text-[#F7820E]" aria-hidden="true" />
+              <a href={`mailto:${UK_CONTACT.email}`} className="text-sm sm:text-[15px] hover:text-[#F7820E] transition-colors break-all">{UK_CONTACT.email}</a>
+            </div>
 
-            {contact.email && (
-              <div className="flex items-center gap-3 text-white/90 mb-3">
-                <Mail className="h-5 w-5 shrink-0 stroke-[2] text-[#F7820E]" aria-hidden="true" />
-                <a
-                  href={`mailto:${contact.email}`}
-                  className="text-sm sm:text-[15px] hover:text-[#F7820E] transition-colors break-all"
-                >
-                  {contact.email}
-                </a>
-              </div>
-            )}
+            <div className="flex items-start gap-3 text-white/90 mb-3.5">
+              <Clock className="h-5 w-5 shrink-0 stroke-[2] text-[#F7820E]" aria-hidden="true" />
+              <span className="text-sm sm:text-[15px]">{UK_CONTACT.hours}</span>
+            </div>
 
-            {contact.region === "uk" && contact.whatsapp && (
-              <a href={`https://wa.me/${contact.whatsapp.whatsapp}`} target="_blank" rel="noreferrer" className="mb-3 flex items-center gap-3 text-sm text-white/90 hover:text-[#F7820E]">
-                <MessageCircle className="h-5 w-5 shrink-0 text-[#F7820E]" aria-hidden="true" />
-                WhatsApp {contact.whatsapp.display}
-              </a>
-            )}
-
-            {contact.hours && (
-              <div className="flex items-center gap-3 text-white/90 mb-3.5">
-                <Clock className="h-5 w-5 shrink-0 stroke-[2] text-[#F7820E]" aria-hidden="true" />
-                <span className="text-sm sm:text-[15px]">
-                  {contact.hours}
-                </span>
-              </div>
-            )}
-
-            {contact.region === "uk" && !contact.email && contact.phones.length === 0 && !contact.whatsapp && !activeCampus && (
-              <p className="mb-3 text-sm text-white/90">UK contact details coming soon.</p>
-            )}
-            {contact.region === "uk" && (
-              <Link href="/contact" className="block mb-3 text-sm font-semibold text-[#F7820E] hover:text-white">Send an enquiry</Link>
-            )}
-
-            {activeCampus && (
-              <a
-                href={campusMapUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-[#F7820E] hover:text-white transition-colors"
-              >
-                <span>View {activeCampus.name} on Google Maps</span>
-                <ExternalLink className="h-4 w-4" aria-hidden="true" />
-              </a>
-            )}
+            <a
+              href={UK_CONTACT_MAP.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-[#F7820E] hover:text-white transition-colors"
+            >
+              <span>View {UK_CONTACT.location} on Google Maps</span>
+              <ExternalLink className="h-4 w-4" aria-hidden="true" />
+            </a>
           </div>
         </div>
 
         {/* ================= LOWER SECTION: INTERACTIVE MAP & STAY UPDATED ================= */}
         <div className="mt-12 pt-10 border-t border-white/10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-          {activeCampus && (
-            <div className="lg:col-span-7 flex flex-col justify-between rounded-2xl border border-white/15 bg-white/[0.04] p-5 sm:p-6 shadow-lg backdrop-blur-sm">
-              <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-[#F7820E]/20 flex items-center justify-center text-[#F7820E]">
-                    <MapPin className="w-5 h-5 stroke-[2.5]" />
-                  </div>
-                  <div>
-                    <h4 className="text-lg sm:text-xl font-bold text-white">Find Us</h4>
-                    <p className="text-xs sm:text-sm text-white/70">
-                      Interactive map for {activeCampus.name}{contact.region === "in" ? " Campus" : ""}
-                    </p>
-                  </div>
+          <div className="lg:col-span-7 flex flex-col justify-between rounded-2xl border border-white/15 bg-white/[0.04] p-5 sm:p-6 shadow-lg backdrop-blur-sm">
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-[#F7820E]/20 flex items-center justify-center text-[#F7820E]">
+                  <MapPin className="w-5 h-5 stroke-[2.5]" />
                 </div>
-                <a
-                  href={campusMapUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-xl bg-[#F7820E] px-4 py-2 text-xs sm:text-sm font-bold text-white shadow-sm transition-all hover:bg-[#E06F00] hover:scale-[1.02] active:scale-[0.98]"
-                >
-                  <span>Open in Maps</span>
-                  <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
-                </a>
+                <div>
+                  <h4 className="text-lg sm:text-xl font-bold text-white">Find Us</h4>
+                  <p className="text-xs sm:text-sm text-white/70">
+                    Map of our {UK_CONTACT.location} address
+                  </p>
+                </div>
               </div>
-
-              <div className="w-full overflow-hidden rounded-xl border border-white/20 bg-black/20 h-[220px] sm:h-[260px]">
-                <iframe
-                  key={selectedCampus}
-                  title={`${activeCampus.name} campus map`}
-                  src={campusEmbedUrl}
-                  className="w-full h-full border-0"
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  allowFullScreen
-                />
-              </div>
+              <a
+                href={UK_CONTACT_MAP.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-xl bg-[#F7820E] px-4 py-2 text-xs sm:text-sm font-bold text-white shadow-sm transition-all hover:bg-[#E06F00] hover:scale-[1.02] active:scale-[0.98]"
+              >
+                <span>Open in Maps</span>
+                <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+              </a>
             </div>
-          )}
 
-          <div className={`${activeCampus ? "lg:col-span-5" : "lg:col-span-12"} flex flex-col justify-between rounded-2xl border border-white/15 bg-white/[0.04] p-6 sm:p-7 shadow-lg backdrop-blur-sm`}>
+            <div className="w-full overflow-hidden rounded-xl border border-white/20 bg-black/20 h-[220px] sm:h-[260px]">
+              <iframe
+                title={`${UK_CONTACT.location} location map`}
+                src={UK_CONTACT_MAP.embed}
+                className="w-full h-full border-0"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                allowFullScreen
+              />
+            </div>
+          </div>
+
+          <div className="lg:col-span-5 flex flex-col justify-between rounded-2xl border border-white/15 bg-white/[0.04] p-6 sm:p-7 shadow-lg backdrop-blur-sm">
             <div>
               <span className="inline-block px-3 py-1 rounded-full bg-[#F7820E]/20 text-[#F7820E] text-xs font-bold tracking-wider uppercase mb-3">
                 Newsletter

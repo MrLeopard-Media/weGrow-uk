@@ -3,7 +3,7 @@
 import { useState, type FormEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useSiteContact } from "@/components/layout/SiteContactProvider";
+import { UK_CONTACT } from "@/constants/company";
 import {
   ArrowLeft,
   ArrowRight,
@@ -23,7 +23,6 @@ const FIXED_CREDENTIALS = {
 };
 
 export default function StudentLoginPage() {
-  const { email: supportEmail, phones: [supportPhone] } = useSiteContact();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -210,15 +209,8 @@ export default function StudentLoginPage() {
             </div>
             <p className="mt-3 leading-7 text-[#53627B]">Please contact the WeGrow Skill Campus administrator to reset or change your password.</p>
             <div className="mt-5 space-y-3 rounded-xl bg-[#F6F8FC] p-4 text-sm">
-              {supportEmail && (
-                <a href={`mailto:${supportEmail}`} className="flex items-center gap-3 font-semibold text-[#0B3B8F] hover:text-[#E06F00]"><Mail className="h-4 w-4 text-[#F7820E]" aria-hidden="true" />{supportEmail}</a>
-              )}
-              {supportPhone && (
-                <a href={`tel:${supportPhone.tel}`} className="flex items-center gap-3 font-semibold text-[#0B3B8F] hover:text-[#E06F00]"><Phone className="h-4 w-4 text-[#F7820E]" aria-hidden="true" />{supportPhone.display}</a>
-              )}
-              {!supportEmail && !supportPhone && (
-                <Link href="/contact" className="font-semibold text-[#0B3B8F] hover:text-[#E06F00]">Contact WeGrow</Link>
-              )}
+              <a href={`mailto:${UK_CONTACT.email}`} className="flex items-center gap-3 font-semibold text-[#0B3B8F] hover:text-[#E06F00]"><Mail className="h-4 w-4 text-[#F7820E]" aria-hidden="true" />{UK_CONTACT.email}</a>
+              <a href={UK_CONTACT.phoneHref} className="flex items-center gap-3 font-semibold text-[#0B3B8F] hover:text-[#E06F00]"><Phone className="h-4 w-4 text-[#F7820E]" aria-hidden="true" />{UK_CONTACT.phone}</a>
             </div>
             <button type="button" onClick={() => setForgotOpen(false)} className="mt-6 w-full rounded-xl bg-[#0B3B8F] px-4 py-3 font-bold text-white transition hover:bg-[#082E70] focus:outline-none focus-visible:ring-4 focus-visible:ring-[#0B3B8F]/25">Got it</button>
           </section>
